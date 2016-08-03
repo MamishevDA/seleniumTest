@@ -1,8 +1,6 @@
 package ru.mamishev;
 
 import junit.textui.TestRunner;
-import org.junit.Before;
-import org.junit.Test;
 import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
@@ -24,7 +22,6 @@ import static junit.framework.TestCase.assertTrue;
 public class SeleniumTest extends TestRunner {
     private WebDriver driver;
 
-    @Before
     public void setUp() {
         driver = new ChromeDriver();
         driver.get("http://wrike.com/wa");
@@ -36,7 +33,7 @@ public class SeleniumTest extends TestRunner {
         driver.quit();
     }*/
 
-    @Test
+
     public void navigateByClick() {
         WebElement navigateElement = driver.findElement(By.cssSelector(".wg-header__desktop-primary-nav-item.wg-header__desktop-primary-nav-item--solutions.wg-header__desktop-primary-nav-item--no-link.wg-header__desktop-primary-nav-item--parent"));
         navigateElement.click();
@@ -51,7 +48,7 @@ public class SeleniumTest extends TestRunner {
         assertEquals("https://www.wrike.com/product-management-software/", driver.getCurrentUrl());
     }
 
-    @Test
+
     public void checkEmail() {
         WebElement inputElement = driver.findElement(By.cssSelector(".wg-input.global-form__input"));
         inputElement.sendKeys("someadress");
@@ -68,7 +65,7 @@ public class SeleniumTest extends TestRunner {
         assertFalse(isPresent);
     }
 
-    @Test
+
     public void checkText() {
         driver.get("https://www.wrike.com/product-management-software/");
         driver.manage().timeouts().pageLoadTimeout(15, TimeUnit.SECONDS);
@@ -76,7 +73,6 @@ public class SeleniumTest extends TestRunner {
         assertTrue(textField.isDisplayed());
     }
 
-    @Test
     public void checkViewFullProduct() {
         driver.get("https://www.wrike.com/product-management-software/");
         driver.manage().timeouts().pageLoadTimeout(15, TimeUnit.SECONDS);
@@ -101,12 +97,14 @@ public class SeleniumTest extends TestRunner {
 
         WebElement errorElement = driver.findElement(By.cssSelector(".wg-field-error.wg-tooltip.wg-tooltip--error.wg-tooltip--input.wg-tooltip--bottom.wg-field-error--visible"));
         assertTrue(errorElement.isDisplayed());
-
+        inputElement.clear();
         inputElement.sendKeys("allstar@mail.ru");
         buttonElement.click();
 
         WebDriverWait waitAgain = new WebDriverWait(driver, 15);
         waitAgain.until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector(".page-id-24")));
+        WebElement thanksElement = driver.findElement(By.tagName("H1"));
+        assertEquals("Thank you for choosing Wrike!", thanksElement.getText());
         assertEquals("https://www.wrike.com/resend/", driver.getCurrentUrl());
     }
 }

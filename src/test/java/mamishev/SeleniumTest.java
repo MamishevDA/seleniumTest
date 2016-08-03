@@ -101,12 +101,14 @@ public class SeleniumTest extends TestRunner {
 
         WebElement errorElement = driver.findElement(By.cssSelector(".wg-field-error.wg-tooltip.wg-tooltip--error.wg-tooltip--input.wg-tooltip--bottom.wg-field-error--visible"));
         assertTrue(errorElement.isDisplayed());
-
+        inputElement.clear();
         inputElement.sendKeys("allstar@mail.ru");
         buttonElement.click();
 
         WebDriverWait waitAgain = new WebDriverWait(driver, 15);
         waitAgain.until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector(".page-id-24")));
+        WebElement thanksElement = driver.findElement(By.tagName("H1"));
+        assertEquals("Thank you for choosing Wrike!",thanksElement.getText());
         assertEquals("https://www.wrike.com/resend/", driver.getCurrentUrl());
     }
 }
